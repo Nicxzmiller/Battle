@@ -1,14 +1,20 @@
 from classes.game import Person, bcolors
+from classes.magic import Spell
 
-magic = [
-    {"name": "Fire", "cost": 10, "dmg": 140},
-    {"name": "Thunder", "cost": 7, "dmg": 130},
-    {"name": "Stone", "cost": 4, "dmg": 115},
-    {"name": "Blizzard", "cost": 9, "dmg": 135}
-]
+# create Black magic
+fire = Spell("Fire", 10, 100, "black")
+thunder = Spell("Thunder", 10, 100, "black")
+blizzard = Spell("Blizzard", 10, 100, "black")
+meteor = Spell("Meteor", 20, 200, "black")
+quake = Spell("Quake", 12, 120, "black")
 
-player = Person(1200, 65, 45, 25, magic)
-enemy = Person(1200, 65, 45, 25, magic)
+# create white magic
+cure = Spell("Cure", 12, 120, "white")
+cura = Spell("Cura", 18, 200, "white")
+
+# instantiate people
+player = Person(1200, 65, 45, 25, [fire, thunder, blizzard, meteor, quake, cure, cura])
+enemy = Person(1200, 65, 45, 25, [])
 
 running = True
 i = 0
@@ -28,9 +34,13 @@ while running:
     elif index == 1:
         player.choose_magic()
         magic_choice = int(input("Choose Magic:")) - 1
+
         magic_dmg = player.generate_spell_damage(magic_choice)
         spell = player.get_spell_name(magic_choice)
         cost = player.get_spell_mp_cost(magic_choice)
+
+        spell = player.magic[magic_choice]
+        magic_damage = spell.generate_damage()
 
         current_mp = player.get_mp()
 
