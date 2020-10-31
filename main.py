@@ -38,9 +38,13 @@ player_items = [{"item": potion, "quantity": 15},
 player1 = Person("Valos :", 2390, 132, 300, 25, player_spells, player_items)
 player2 = Person("Nick  :", 1200, 188, 311, 25, player_spells, player_items)
 player3 = Person("Robot :", 3086, 174, 288, 25, player_spells, player_items)
-enemy = Person("Magus", 11200, 221, 525, 25, [], [])
+
+enemy1 = Person("Imp", 1200, 130, 560, 325, [], [])
+enemy2 = Person("Magus", 11200, 221, 525, 25, [], [])
+enemy3 = Person("Imp", 1200, 130, 560, 325, [], [])
 
 players = [player1, player2, player3]
+enemies = [enemy1, enemy2, enemy3]
 
 running = True
 i = 0
@@ -57,7 +61,8 @@ while running:
 
     print("\n")
 
-    enemy.get_enemy_stats()
+    for enemy in enemies:
+        enemy.get_enemy_stats()
 
     for player in players:
         player.choose_action()
@@ -66,8 +71,9 @@ while running:
 
         if index == 0:
             dmg = player.generate_damage()
-            enemy.take_damage(dmg)
-            print("You attacked for", dmg, "points of damage.")
+            enemy = player.choose_target(enemies)
+            enemies[enemy].take_damage(dmg)
+            print("You attacked" + enemies[enemy].name + " for", dmg, "points of damage.")
         elif index == 1:
             player.choose_magic()
             magic_choice = int(input("    Choose Magic: ")) - 1
@@ -90,8 +96,10 @@ while running:
                 player.heal(magic_dmg)
                 print(bcolors.OKBLUE + "\n" + spell.name + " heals for", str(magic_dmg), "HP." + bcolors.ENDC)
             elif spell.type == "black":
-                enemy.take_damage(magic_dmg)
-                print(bcolors.OKBLUE + "\n" + spell.name + " deals", str(magic_dmg), "points of damage", bcolors.ENDC)
+                enemy = player.choose_target(enemies)
+                enemies[enemy].take_damage(magic_dmg)
+
+                print(bcolors.OKBLUE + "\n" + spell.name + " deals", str(magic_dmg), "points of damage to" + enemies[enemy].name + bcolors.ENDC)
         elif index == 2:
             player.choose_item()
             item_choice = int(input("    Choose item: ")) - 1
