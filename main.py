@@ -73,7 +73,11 @@ while running:
             dmg = player.generate_damage()
             enemy = player.choose_target(enemies)
             enemies[enemy].take_damage(dmg)
-            print("You attacked " + enemies[enemy].name + "for", dmg, "points of damage.")
+            print("You attacked " + enemies[enemy].name.replace(" ", "") + " for", dmg, "points of damage.")
+            # deletes enemy from list if enemy power is finished
+            if enemies[enemy].get_hp() == 0:
+                print(enemies[enemy].name.replace(" ", "") + " has died.")
+                del enemies[enemy]
         elif index == 1:
             player.choose_magic()
             magic_choice = int(input("    Choose Magic: ")) - 1
@@ -99,7 +103,11 @@ while running:
                 enemy = player.choose_target(enemies)
                 enemies[enemy].take_damage(magic_dmg)
 
-                print(bcolors.OKBLUE + "\n" + spell.name + " deals", str(magic_dmg), "points of damage to " + enemies[enemy].name + bcolors.ENDC)
+                print(bcolors.OKBLUE + "\n" + spell.name + " deals", str(magic_dmg), "points of damage to " + enemies[enemy].name.replace(" ", "") + bcolors.ENDC)
+                # deletes enemy from list if enemy power is finished
+                if enemies[enemy].get_hp() == 0:
+                    print(enemies[enemy].name.replace(" ", "") + " has died.")
+                    del enemies[enemy]
         elif index == 2:
             player.choose_item()
             item_choice = int(input("    Choose item: ")) - 1
@@ -133,6 +141,11 @@ while running:
                 enemies[enemy].take_damage(item.prop)
                 print(bcolors.FAIL + "\n" + item.name + " deals", str(item.prop), "points of damage to " + enemies[enemy].name + bcolors.ENDC)
 
+                # deletes enemy from list if enemy power is finished
+                if enemies[enemy].get_hp() == 0:
+                    print(enemies[enemy].name.replace(" ", "") + " has died.")
+                    del enemies[enemy]
+
     enemy_choice = 1
     target = random.randrange(0, 3)
 
@@ -146,10 +159,13 @@ while running:
     for enemy in enemies:
         if enemy.get_hp() == 0:
             defeated_enemies += 1
+    for player in players:
+        if player.get_hp() == 0:
+            defeated_players += 1
 
     if defeated_enemies == 2:
         print(bcolors.OKGREEN + "!!!YOU WIN!!!" + bcolors.ENDC)
         running = False
-    elif player.get_hp() == 0:
+    elif defeated_players == 2:
         print(bcolors.FAIL + "!!!You Lose!!!" + bcolors.ENDC)
         running = False
