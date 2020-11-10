@@ -15,6 +15,7 @@ quake = Spell("Quake", 12, 120, "black")
 # create white magic
 cure = Spell("Cure", 25, 620, "white")
 cura = Spell("Cura", 32, 1500, "white")
+curaga = Spell("CUraga", 50, 6000, "white")
 
 # Create some items
 potion = Item("Potion", "potion", "Heals 50 HP", 50)
@@ -25,7 +26,7 @@ hielixer = Item("MegaElixer", "elixer", "Fully restores party's HP/MP", 9999)
 grenade = Item("Grenade", "attack", "Deals 500 damage", 500)
 
 player_spells = [fire, thunder, blizzard, meteor, quake, cure, cura]
-enemy_spells = [fire, meteor, cure]
+enemy_spells = [fire, meteor, curaga]
 player_items = [{"item": potion, "quantity": 15},
                 {"item": hipotion, "quantity": 5},
                 {"item": superpotion, "quantity": 5},
@@ -166,6 +167,7 @@ while running:
         print(bcolors.FAIL + "!!!You Lose!!!" + bcolors.ENDC)
         running = False
 
+    print("\n")
     # enemy attack phase
     for enemy in enemies:
         enemy_choice = random.randrange(0, 2)
@@ -182,7 +184,7 @@ while running:
 
             if spell.type == "white":
                 enemy.heal(magic_dmg)
-                print(bcolors.OKBLUE + "\n" + enemy.name.replace(" ", "") + "'s " + spell.name + " heals " + enemy.name + " for ", str(magic_dmg), "HP." + bcolors.ENDC)
+                print(bcolors.OKBLUE + spell.name + " heals " + enemy.name + " for ", str(magic_dmg), "HP." + bcolors.ENDC)
             elif spell.type == "black":
                 target = random.randrange(0, 3)
                 players[target].take_damage(magic_dmg)
