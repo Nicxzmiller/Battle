@@ -168,11 +168,11 @@ while running:
 
     # enemy attack phase
     for enemy in enemies:
-        enemy_choice = random.randrange(0, 3)
+        enemy_choice = random.randrange(0, 2)
         if enemy_choice == 0:
             # choose attack
             target = random.randrange(0, 3)
-            enemy_dmg = enemies.generate_damage()
+            enemy_dmg = enemy.generate_damage()
             players[target].take_damage(enemy_dmg)
             print(enemy.name.replace(" ", "") + " attacks " + players[target].name.replace(" ", "") + " for", enemy_dmg)
         elif enemy_choice == 1:
@@ -182,16 +182,15 @@ while running:
 
             if spell.type == "white":
                 enemy.heal(magic_dmg)
-                print(bcolors.OKBLUE + "\n" + spell.name + " heals " + enemy.name + " for ", str(magic_dmg), "HP." + bcolors.ENDC)
+                print(bcolors.OKBLUE + "\n" + enemy.name.replace(" ", "") + "'s " + spell.name + " heals " + enemy.name + " for ", str(magic_dmg), "HP." + bcolors.ENDC)
             elif spell.type == "black":
-                enemy = player.choose_target(enemies)
-                enemies[enemy].take_damage(magic_dmg)
+                target = random.randrange(0, 3)
+                players[target].take_damage(magic_dmg)
 
-                print(bcolors.OKBLUE + "\n" + spell.name + " deals", str(magic_dmg), "points of damage to " + enemies[enemy].name.replace(" ", "") + bcolors.ENDC)
+                print(bcolors.OKBLUE + "\n" + spell.name + " deals", str(magic_dmg), "points of damage to " + players[target].name.replace(" ", "") + bcolors.ENDC)
                 # deletes enemy from list if enemy power is finished
-                if enemies[enemy].get_hp() == 0:
-                    print(enemies[enemy].name.replace(" ", "") + " has died.")
-                    del enemies[enemy]
-
-            print("Enemy chose", spell, "damage is", magic_dmg)
+                if players[target].get_hp() == 0:
+                    print(players[target].name.replace(" ", "") + " has died.")
+                    del players[player]
+            # print("Enemy chose", spell, "damage is", magic_dmg)
 
